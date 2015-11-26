@@ -9,26 +9,26 @@ var limit = 10;
 //时间单位
 var during = 60000;
 var restart = [];
-var isToolFrequently = function(){
-	//记录重启时间
-	var time = Date.now();
-	var length = restart.push(time);
-	if( length > limit){
-		//取出最后10个记录
-		restart = restart.slice( limit* -1);
-	}
-	//最后一次重启到前10次重启之间的时间间隔
-	return restart.length >= limit && restart[restart.length - 1] - restart[0] < during;
+var isToolFrequently = function() {
+    //记录重启时间
+    var time = Date.now();
+    var length = restart.push(time);
+    if (length > limit) {
+        //取出最后10个记录
+        restart = restart.slice(limit * -1);
+    }
+    //最后一次重启到前10次重启之间的时间间隔
+    return restart.length >= limit && restart[restart.length - 1] - restart[0] < during;
 };
 
 var workers = {};
 var createWorker = function() {
-	//检查是否太过频繁
-	if(isToolFrequently()){
-		//触发giveup事件后，不在重启
-		process.emit('giveup',length,during);
-		return ;
-	}
+    //检查是否太过频繁
+    if (isToolFrequently()) {
+        //触发giveup事件后，不在重启
+        process.emit('giveup', length, during);
+        return;
+    }
 
     var worker = fork(__dirname + '/worker.js');
     //重新启动新的进程
