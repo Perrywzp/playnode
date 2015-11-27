@@ -43,7 +43,6 @@ var createWorker = function() {
         delete workers[worker.pid];
         // createWorker();
     });
-
     //句柄转发
     worker.send('server', server);
     workers[worker.pid] = worker;
